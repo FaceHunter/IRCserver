@@ -43,11 +43,13 @@ class IRCserver(threading.Thread):
 			else:
 				break
 		print self.nick+" is logged in with username: "+self.username+" and hostname: "+self.hostname
-		users[self.nick] = {"username":self.username, "host":self.hostname, "realname":self.realname}
-		print users
+		usermodes.append({"nick":self.nick, "username":self.username, "host":self.hostname, "realname":self.realname})
+		userlist.append(self.nick)
+		print userlist
 		self.ircmain()
 	
 	def ircmain(self):
+		print "entering main"
 		while 1:
 			data = self.sock.recv(253)
 			print data

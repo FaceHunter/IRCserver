@@ -1,3 +1,3 @@
 @echo off
-IRCserver_threading.py
+IRCserver.py
 pause
