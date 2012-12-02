@@ -5,7 +5,7 @@ channels = {}
 channel_list = []
 users = {}
 
-class IRCconnection(threading.Thread):
+class IRCserver(threading.Thread):
 	
 	def __init__(self, (sock, addr)):
 		print "__init__"
@@ -106,7 +106,7 @@ s.listen(2)
 threads = []
 
 while True:
-    rh = IRCconnection(s.accept())
+    rh = IRCserver(s.accept())
     rh.daemon = True
     rh.start()
     threads.append(rh)
