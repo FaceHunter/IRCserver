@@ -1,0 +1,5 @@
+- channels! (makes v0.2)
+	* channel creation
+	* channel info storage
+	* users-in-channel storage
+	* 
