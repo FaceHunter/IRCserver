@@ -4,9 +4,10 @@ print "IRCserver started at port 6667"
 
 channelmodes = []
 channellist = []
+alladdrs = []
 
 userlist = []
-usermodes = []
+usermodes = {}
 
 class IRCserver(threading.Thread):
 	
@@ -14,6 +15,7 @@ class IRCserver(threading.Thread):
 		print "__init__"
 		self.sock = sock
 		self.addr = addr
+		print addr
 		threading.Thread.__init__(self)
 		
 	def run(self):
@@ -43,9 +45,12 @@ class IRCserver(threading.Thread):
 			else:
 				break
 		print self.nick+" is logged in with username: "+self.username+" and hostname: "+self.hostname
-		usermodes.append({"nick":self.nick, "username":self.username, "host":self.hostname, "realname":self.realname})
+		usermodes[str(self.nick)] = {"username":self.username, "host":self.hostname, "realname":self.realname, "addr":self.addr}
+		alladdrs.append(self.addr)
 		userlist.append(self.nick)
 		print userlist
+		print usermodes
+		self.sendtoall("NOTICE AUTH :"+self.nick+" joined the network!\r\n")
 		self.ircmain()
 	
 	def ircmain(self):
@@ -58,7 +63,12 @@ class IRCserver(threading.Thread):
 				
 				
 				
-				
+	def sendtoall(self, text):
+		for x in alladdrs:
+			sockets = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			print x[0]
+			print x[1]
+			sockets.sendto(text, (x[0],x[1]))
 				
 				
 				
@@ -68,7 +78,8 @@ s.listen(2)
 threads = []
 
 while True:
-    rh = IRCserver(s.accept())
-    rh.daemon = True
-    rh.start()
-    threads.append(rh)
+	rh = IRCserver(s.accept())
+	rh.daemon = True
+	rh.start()
+	threads.append(rh)
+	print threads
