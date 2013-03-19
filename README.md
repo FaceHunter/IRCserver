@@ -1,0 +1,4 @@
+IRCserver
+=========
+
+IRCserver in python
