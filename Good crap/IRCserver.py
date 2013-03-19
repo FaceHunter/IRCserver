@@ -22,20 +22,23 @@ class IRCserver(threading.Thread):
 		self.sock.send("NOTICE AUTH :*** Welcome to the FaceRC network\r\n")
 		while 1:
 			raw_data = self.sock.recv(253)
-			print raw_data
-			if raw_data.find("NICK") != -1:
-					a = raw_data.split("\r\n")
-					b = str(a[0]).split("NICK")
-					print "nick = "+str(b[1]).strip()
-					self.nick = str(b[1]).strip()
-		
-			if raw_data.find("USER") != -1:
-					a = raw_data.split("\r\n")
-					b = str(a[1]).split()
-					print "realname "+b[1]
-					self.username = b[1]
-					self.hostname = b[3]
-					self.realname = b[4].strip(":")
+			print "raw_data=BEGIN"+raw_data+"END"
+			datas = raw_data.split("\n")
+			for data in datas:
+				if data.find("NICK") != -1:
+						a = data.split("\r\n")
+						b = str(a[0]).split("NICK")
+						print b
+						print "nick = "+str(b[1]).strip()
+						self.nick = str(b[1]).strip()
+			
+				if data.find("USER") != -1:
+						a = data.split("\r\n")
+						b = str(a[1]).split()
+						print "realname "+b[1]
+						self.username = b[1]
+						self.hostname = b[3]
+						self.realname = b[4].strip(":")
 			try:
 				self.nick
 				self.username
