@@ -3,12 +3,8 @@ import threading
 import traceback
 print "IRCserver started at port 6667"
 
-channelmodes = []
-channellist = []
-alladdrs = []
 allsocks = []
-userlist = []
-usermodes = {}
+userlist = {}
 
 class IRCserver(threading.Thread):
 	
@@ -57,7 +53,7 @@ class IRCserver(threading.Thread):
 			print traceback.print_exc()
 			
 		print self.nick+" is logged in with username: "+self.username+" and hostname: "+self.hostname
-		usermodes[str(self.nick)] = {"username":self.username, "host":self.hostname, "realname":self.realname, "addr":self.addr}
+		userlist[str(self.nick)] = {"username":self.username, "host":self.hostname, "realname":self.realname, "socket":self.socket}
 		alladdrs.append(self.addr)
 		userlist.append(self.nick)
 		print userlist
